@@ -20,6 +20,8 @@ import { PlayerActor } from '../entities/PlayerActor';
 import { ProjectileActor } from '../entities/ProjectileActor';
 import { Starfield } from '../fx/Starfield';
 import {
+  damageAsteroid,
+  isAsteroidDead,
   isAsteroidGone,
   spawnAsteroid,
   stepAsteroid,
@@ -379,18 +381,27 @@ export class GameScene extends Scene {
       }
     }
 
-    // Asteroids are indestructible: they soak bullets and hurt the player.
+    // Asteroids take damage now: bullets chip their HP, and they break apart —
+    // awarding points — once depleted. Until then they're solid obstacles that
+    // still soak bullets and hurt on contact.
+    const destroyedAsteroids = new Set<Live<AsteroidState>>();
     for (const asteroid of this.asteroids) {
       for (const bullet of this.bullets) {
         if (spentBullets.has(bullet)) continue;
         if (circleBoxOverlap(asteroid.state, bullet.state)) {
           spentBullets.add(bullet);
+          damageAsteroid(asteroid.state, bullet.state.damage);
+          if (isAsteroidDead(asteroid.state)) {
+            destroyedAsteroids.add(asteroid);
+            this.score += asteroid.state.score;
+          }
           break;
         }
       }
     }
 
     for (const asteroid of this.asteroids) {
+      if (destroyedAsteroids.has(asteroid)) continue;
       if (circleBoxOverlap(asteroid.state, this.player)) {
         struckAsteroids.add(asteroid);
         if (damagePlayer(this.player, PLAYER.invulnSeconds) && !this.player.alive) {
@@ -420,6 +431,10 @@ export class GameScene extends Scene {
     if (struckAsteroids.size > 0) {
       for (const asteroid of struckAsteroids) asteroid.actor.kill();
       this.asteroids = this.asteroids.filter((asteroid) => !struckAsteroids.has(asteroid));
+    }
+    if (destroyedAsteroids.size > 0) {
+      for (const asteroid of destroyedAsteroids) asteroid.actor.kill();
+      this.asteroids = this.asteroids.filter((asteroid) => !destroyedAsteroids.has(asteroid));
     }
     if (struckProjectiles.size > 0) {
       for (const projectile of struckProjectiles) projectile.actor.kill();

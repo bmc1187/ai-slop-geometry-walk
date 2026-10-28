@@ -25,9 +25,11 @@ works as an alias for the arrow keys.
   - **Orange hunter triangles** (150 pts) are slow but *home in on you*. Each one
     picks a side and slides toward that flank of the cube, tracking your
     vertical position. They're easy to outrun — keep moving.
-- **Grey circle asteroids** drift across the field too. They are indestructible
-  obstacles: they **soak up your bullets** and cost you a life on contact, so
-  weave around them or wait for a gap. They bounce off the top and bottom edges.
+- **Grey circle asteroids** drift across the field too. They are **tough but
+  destructible**: bigger rocks take more hits (peppering them flashes white), and
+  they **soak up your bullets** as they go. Destroy one for points, or weave
+  around it — contact still costs you a life. They bounce off the top and bottom
+  edges.
 - **Every 5000 points a boss arrives** — a huge spinning purple triangle with a
   health bar. Ordinary enemies and asteroids stop spawning while it's on screen.
   It **fires aimed bursts** of pink projectiles at you (dodge them or take a hit).

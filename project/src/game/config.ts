@@ -135,13 +135,17 @@ export const ENEMY_SPAWN = {
   rampPerMinute: 0.5,
 } as const;
 
-/** Indestructible circular obstacles that drift across the field. */
+/** Circular obstacles that drift across the field and can be shot apart. */
 export const ASTEROID = {
   minRadius: 18,
   maxRadius: 44,
   minSpeed: 70,
   maxSpeed: 120,
   maxDrift: 55,
+  /** HP per pixel of radius: small rocks take ~3 hits, the largest ~7. */
+  hpPerRadius: 0.16,
+  /** Points awarded per point of max HP (tougher rocks score more). */
+  scorePerHp: 25,
 } as const;
 
 export const ASTEROID_SPAWN = {

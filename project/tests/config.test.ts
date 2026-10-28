@@ -61,6 +61,11 @@ describe('asteroids', () => {
   it('spawns less often than enemies', () => {
     expect(ASTEROID_SPAWN.minInterval).toBeGreaterThan(ENEMY_SPAWN.minInterval);
   });
+
+  it('is destructible: has health and a point value', () => {
+    expect(ASTEROID.hpPerRadius).toBeGreaterThan(0);
+    expect(ASTEROID.scorePerHp).toBeGreaterThan(0);
+  });
 });
 
 describe('boss', () => {
