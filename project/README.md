@@ -54,9 +54,15 @@ pnpm dev         # start the Vite dev server
 pnpm test        # run the unit tests (Vitest)
 pnpm test:watch  # tests in watch mode
 pnpm typecheck   # tsc --noEmit
-pnpm build       # typecheck + production bundle into dist/
+pnpm build       # typecheck + self-contained bundle into dist/
 pnpm preview     # serve the production build
 ```
+
+`pnpm build` emits a **single self-contained `dist/index.html`** (CSS and JS
+inlined, no external asset requests), so you can open that one file directly —
+double-click it, email it, or open it over `file://` — with no server. The
+inlining step lives in `scripts/inline-dist.mjs`; it places the script at the
+end of `<body>` so the canvas exists before the engine starts.
 
 ## Project layout
 
@@ -80,6 +86,8 @@ src/
     fx/Starfield.ts       parallax scrolling backdrop
     scenes/GameScene.ts   input, spawning, collisions, scoring
     ui/Hud.ts             DOM overlay (score / lives / game over)
+scripts/
+  inline-dist.mjs         inlines the build output into one dist/index.html
 tests/                    Vitest suites for the pure logic
 ```
 
